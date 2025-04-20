@@ -15,7 +15,7 @@ const CreateRoomOpen = ({roomId, passcode}) => {
       <Modal
         isOpen={modalIsOpen}
         onRequestClose={() => setModalIsOpen(false)}
-        className="bg-slate-100 p-6 rounded-3xl shadow-lg w-1/3 max-w-lg mx-auto"
+        className="bg-slate-100 p-6 rounded-3xl shadow-lg w-[95%] md:w-1/3 max-w-lg mx-auto"
         overlayClassName="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
       >
         <div className="flex flex-col items-center gap-3">
