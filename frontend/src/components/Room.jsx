@@ -24,6 +24,7 @@ const Room = () => {
   const [activeReaction, setActiveReaction] = useState(null);
   const [fullScreenUser, setFullScreenUser] = useState(null);
   const [connectionStatus, setConnectionStatus] = useState('connecting');
+  const [password, setPassword] = useState(null);
   const isMobile = useMediaQuery({ maxWidth: 767 });
   const isTablet = useMediaQuery({ minWidth: 768, maxWidth: 1023 });
   
@@ -214,6 +215,7 @@ const Room = () => {
         const res = await axios.get(`https://focusmate-deploy.onrender.com/api/rooms/${roomId}`);
         if (res.data) {
           setRoomDetails(res.data);
+          setPassword(res.data.password);
           setMessages(res.data.messages || []);
           updateTimeLeft(res.data.expiresAt);
           
@@ -798,15 +800,15 @@ const Room = () => {
   }
 
   return (
-    <div className="flex flex-col h-screen bg-gray-100">
+    <div className="flex flex-col h-screen bg-gray-100 dark:bg-slate-900">
       {/* Header */}
-      <div className="bg-purple-400 text-white p-2 sm:p-4 flex justify-between items-center">
+      <div className="bg-purple-400 dark:bg-slate-700 text-white p-2 sm:p-4 flex justify-between items-center">
         <div>
           <h2 className="text-lg sm:text-xl font-bold truncate max-w-[180px] sm:max-w-none">
             {roomDetails?.name}'s Room
           </h2>
           <p className="text-xs sm:text-sm">
-            ID: {roomId} | {users.length} users
+            ID: {roomId} | password: {password} | {users.length} users
           </p>
         </div>
         <div className="bg-red-500 px-3 py-1 sm:px-4 sm:py-2 rounded-lg flex items-center">
@@ -967,12 +969,12 @@ const Room = () => {
         {/* Chat panel */}
         <div className={`${
           isMobile ? 'order-1 border-b' : 'border-l'
-        } border-gray-300 flex flex-col bg-white ${
+        } border-gray-300 dark:bg-slate-900 flex flex-col bg-white  ${
           isMobile ? 'h-1/2' : 'w-80'
         }`}>
           <div className="p-2 sm:p-3 border-b border-gray-300 flex items-center">
             <FaUserFriends className="mr-2 text-red-400" />
-            <h3 className="font-semibold">Chat</h3>
+            <h3 className="font-semibold dark:text-white">Chat</h3>
           </div>
           <div className="flex-1 p-2 sm:p-3 overflow-y-auto">
             {messages.map((msg, index) => (
@@ -983,7 +985,7 @@ const Room = () => {
                 {!msg.isReaction && (
                   <div className="font-semibold text-red-400 text-sm sm:text-base">{msg.sender}</div>
                 )}
-                <div className="text-xs sm:text-sm">{msg.content}</div>
+                <div className="text-xs sm:text-sm dark:text-white">{msg.content}</div>
               </div>
             ))}
             <div ref={messageEndRef} />
@@ -1009,7 +1011,7 @@ const Room = () => {
       </div>
   
       {/* Controls bar */}
-      <div className="bg-white border-t border-gray-300 p-2 sm:p-3 flex justify-center items-center space-x-2 sm:space-x-4 relative">
+      <div className="bg-white dark:bg-gray-700 border-t border-gray-300  p-2 sm:p-3 flex justify-center items-center space-x-2 sm:space-x-4 relative">
         <button
           onClick={toggleMute}
           className={`p-2 sm:p-3 rounded-full ${
